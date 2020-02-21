@@ -48,5 +48,8 @@ echo "sort -k1,1 -k2,2n $pamFold/${genome}PAM.sameChr.tx.bed > $pamFold/${genome
 echo "removeIllegalBlockEntries.py $pamFold/${genome}PAM.sameChr.tx.sorted.bed $pamFold/${genome}PAM.sameChr.tx.sorted.legal.bed $pamFold/${genome}PAM.sameChr.tx.sorted.illegal.bed" | qsub -l walltime=24:00:00
 
 
+#optional:
+#select clustered sgRNA with 5-8 binding sites and within 5kb-10kb distance
+awk -v FS="\t" -v OFS="\t" -v minBS=5 -v maxBS=8 -v minDist=5000 -v maxDist=10000 '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $pamFold/${genome}PAM.sameChr.tx.sorted.legal.bed > $pamFold/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
 
 

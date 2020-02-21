@@ -204,6 +204,33 @@ void foldGenomics_fold_stdsort(int argc,const char** argv)
 
 void outKPtoBedFile(ofstream& ffileOut,SmartChrMap & indexedChrMap, int freq,vector<KeyedPosition> &store)
 {
+
+    string seq="";
+    bool firstItem=true;
+    for(vector<KeyedPosition>::iterator i=store.begin();i!=store.end();i++){
+        
+        ffileOut<<indexedChrMap.getChrMapInfoFromPChrID(i->chrID).k1; //chrom
+        ffileOut<<"\t";
+        int start0=i->getPos()-1;
+        int end1=start0+20;
+        char strand=(i->isForward()?'+':'-');
+        ffileOut<<start0<<"\t"<<end1<<"\t";
+
+	if(firstItem){
+		seq=Key3b2Nuc(i->b);
+		firstItem=false;
+	}
+        ffileOut<<i->b<<"."<<freq<<"/"<<seq<<"\t";
+        ffileOut<<freq<<"\t";
+        ffileOut<<strand<<endl;
+    }
+    
+}
+
+void outKPtoBedFile_old(ofstream& ffileOut,SmartChrMap & indexedChrMap, int freq,vector<KeyedPosition> &store)
+{
+
+
     for(vector<KeyedPosition>::iterator i=store.begin();i!=store.end();i++){
         
         ffileOut<<indexedChrMap.getChrMapInfoFromPChrID(i->chrID).k1; //chrom
@@ -218,6 +245,7 @@ void outKPtoBedFile(ofstream& ffileOut,SmartChrMap & indexedChrMap, int freq,vec
     }
     
 }
+
 
 void foldGenomics_foldToBed_stdsort(int argc,const char** argv)
 {

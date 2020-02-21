@@ -83,6 +83,50 @@ typedef  uint64_t NucKey3b;
 		ps++;\
 } 
 
+inline string Key3b2Nuc(NucKey3b key3b)
+{
+	string seq;
+	bool moreNuc=true;
+
+    while(moreNuc)
+	{
+        switch(key3b & 7)
+		{
+			case 0:
+				seq+=A_SYM;
+				break;
+			case 1:
+				seq+=C_SYM;
+				break;
+			case 2:
+				seq+=T_SYM;
+				break;
+			case 3:
+				seq+=G_SYM;
+				break;
+			case 4:
+				seq+="N";
+				break;
+			case 5:
+				seq+=R_SYM;
+				break;
+			case 6:
+				seq+=Y_SYM;
+				break;
+			case 7:
+				moreNuc=false;
+				break;
+			default:
+				break;
+		}
+        key3b>>=3;
+    }
+        
+    return seq;
+
+}
+
+
 inline NucKey3b Nuc2Key3b(const char* nuc,int length)
 {
 	NucKey3b key=NULL_KEY;

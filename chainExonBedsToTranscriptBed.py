@@ -21,8 +21,6 @@ def outMemLines(ostream,memLines,chroms,chromMin,chromMax,spanMax,exons):
     if spanMax>0 and thisChromSpan>spanMax:
         return
 
-#chr1    13037182        13037202        8132200763145072640.5   5       +       AAAAGAGGCAACAGAGGGGA    659542  13037182        13696724
-    #sort exons by first arg
     exons.sort(key=itemgetter(0))
 
     memLineFields=memLines[0].split("\t")
@@ -38,8 +36,7 @@ def outMemLines(ostream,memLines,chroms,chromMin,chromMax,spanMax,exons):
     outputFields.append(",".join(blockStarts))
 
     print >> ostream,"\t".join([str(x) for x in outputFields])
-    #for memLine in memLines:
-    #    print >> ostream,memLine+"\t"+str(thisChromSpan)+"\t"+str(chromMin)+"\t"+str(chromMax)
+
 
 if __name__=='__main__':
     programName=argv[0]
@@ -59,7 +56,7 @@ if __name__=='__main__':
     exons=[]
     for lin in fil:
         lino+=1
-        if lino%1000==1:
+        if lino%1000000==1:
             print >> stderr,"processing line",lino
         lin=lin.rstrip("\r\n")
         fields=lin.split("\t")

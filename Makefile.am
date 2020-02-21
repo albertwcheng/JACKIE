@@ -1,0 +1,3 @@
+AUTOMAKE_OPTIONS = foreign
+bin_PROGRAMS = JACKIE
+JACKIE_SOURCES = main.cpp

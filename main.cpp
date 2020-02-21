@@ -462,7 +462,7 @@ void foldGenomics_sortCompact(int argc,const char**argv)
 int main(int argc, const char **argv)
 {
 
-	cerr<<"Fold Genomics"<<endl;
+	cerr<<"JACKIE (Jackie & Albert's CRISPR k-mer instance enumerator) v0.1"<<endl;
 	cerr<<"[Built:"<<__DATE__<<" "<<__TIME__<<"]"<<endl;
 	if(argc<2 || !strcmp(argv[1],"-h"))
 	{

@@ -36,7 +36,7 @@ echo "date; outbedForPrefixJob.sh $pamFold $prefix 1 0; date" | qsub -l walltime
 done
 
 #concatenate all bed files into one
-cat $pamFold/*.bed > $pamFold/${genome}PAM.BED
+echo "cat $pamFold/*.bed > $pamFold/${genome}PAM.BED" | qsub -l walltime=24:00:00
 
 #collapse sgRNA binding locations with same sequecnes into an extended bed format
 echo "chainExonBedsToTranscriptBed.py $pamFold/${genome}PAM.BED 0 > $pamFold/${genome}PAM.sameChr.tx.bed" | qsub -l walltime=24:00:00
@@ -49,7 +49,7 @@ echo "removeIllegalBlockEntries.py $pamFold/${genome}PAM.sameChr.tx.sorted.bed $
 
 
 #optional:
-#select clustered sgRNA with 5-8 binding sites and within 5kb-10kb distance
+#select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
 awk -v FS="\t" -v OFS="\t" -v minBS=5 -v maxBS=8 -v minDist=5000 -v maxDist=10000 '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $pamFold/${genome}PAM.sameChr.tx.sorted.legal.bed > $pamFold/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
 
 

@@ -50,6 +50,22 @@ echo "removeIllegalBlockEntries.py $pamFold/${genome}PAM.sameChr.tx.sorted.bed $
 
 #optional:
 #select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
-awk -v FS="\t" -v OFS="\t" -v minBS=5 -v maxBS=8 -v minDist=5000 -v maxDist=10000 '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $pamFold/${genome}PAM.sameChr.tx.sorted.legal.bed > $pamFold/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
+minBS=5
+maxBS=8
+minDist=5000
+maxDist=10000
+awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $pamFold/${genome}PAM.sameChr.tx.sorted.legal.bed > $pamFold/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
 
 
+#select unique sgRNA sites
+awk -v FS="\t" -v OFS="\t" '($5==1)' $pamFold/${genome}PAM.BED > $pamFold/${genome}PAM.1copy.BED
+
+#select sgRNA sites within region of interest
+
+
+#run CasOffFinder (requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/portable)
+#export PATH=/usr/bin/:${PATH}
+#export PATH=~/Dropbox/unixEnv/scripts:${PATH}
+runCasOFFinderOnSequences.py <file> 4,/,2 3 ~/Dropbox/unixEnv/genomes/hg38/ casOffinder_outputDir > ???
+
+#runCasOFFinderOnSequences.py newSelectionLoop.overlap.hg38PAM.sameChr.tx.sorted.legal.1copy.GC40to60.no5T.noLowercase.2.bed 17 3 ~/Dropbox/unixEnv/genomes/hg38/ newSelectionLoop.overlap.hg38PAM_off > newSelectionLoop.overlap.hg38PAM.sameChr.tx.sorted.legal.1copy.GC40to60.no5T.noLowercase.2.casOffinder.txt

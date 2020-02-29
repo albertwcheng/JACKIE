@@ -18,20 +18,18 @@ make
 make install
 ```
 
-Add JACKIE to path. In your ~/.bashrc file, add
+Add JACKIE to path. In your ~/.bashrc file, add a line:
 ```
 export PATH=/path/to/install/:${PATH}
 ```
-
-<!--
-
+## Example run
+Download genome fasta files and produce a merged files for "non-random" chromosomes
+```
 genome=<fill in your genome> #e.g., hg38
-genomesRoot=<fill in your root path> #e.g.,/hpcdata/wcheng/genomes
+genomesRoot=<fill in your root path> 
 pathToGenome=$genomesRoot/$genome
 genomeFasta=$pathToGenome/$genome.nr.fa
-pamFold=$pathToGenome/pamFold/
 
-#download genome fasta files and produce a merged files for non-random chromosomes
 cd $pathToGenome
 wget --timestamping "ftp://hgdownload.cse.ucsc.edu/goldenPath/$genome/chromosomes/*"
 gunzip *.gz
@@ -41,7 +39,22 @@ mv chrUn*.fa random/
 mkdir nr
 mv *.fa nr
 cat nr/*.fa > $genome.nr.fa
-mkdir $pamFold
+
+```
+
+Run first step of JACKIE
+```
+jackieDB=$pathToGenome/jackieDB/
+mkdir $jackieDB
+
+....
+```
+
+<!--
+
+
+
+
 
 
 #generate binary represetation of sgRNA binding locations

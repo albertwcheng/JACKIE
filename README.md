@@ -18,5 +18,5 @@ make
 make install
 ```
 
-##Run JACKIE
+## Run JACKIE
 see example.sh for an example on how to run JACKIE

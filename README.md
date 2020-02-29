@@ -96,13 +96,15 @@ echo "removeIllegalBlockEntries.py $jackieDB/${genome}PAM.sameChr.tx.sorted.bed 
 ## Filtering examples
 
 Select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
+Precomputed [hg38 same-chromosome sites](http://albertcheng.info/jackie_downloads/hg38PAM.sameChr.tx.sorted.legal.bed.gz) and [mm10 same-chromosome sites](http://albertcheng.info/jackie_downloads/mm10.sameChr.tx.sorted.legal.bed.gz)
 ```
 #select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
 minBS=5
 maxBS=8
 minDist=5000
 maxDist=10000
-awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
+genome=hg38 #human genome example
+awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $genome.sameChr.tx.sorted.legal.bed > $genome.sameChr.tx.sorted.legal.bed
 ```
 Select unique sgRNA sites
 ```

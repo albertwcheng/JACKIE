@@ -106,13 +106,41 @@ Select unique sgRNA sites
 awk -v FS="\t" -v OFS="\t" '($5==1)' $jackieDB/${genome}PAM.BED > $jackieDB/${genome}PAM.1copy.BED
 ```
 
+## Selecting (clustered or single) CRISPR sites overlapping regions of interest
+Put regions of interest into a bed file, say,  `selection.bed`:
+```
+chr13	75845001	75850000	Region_A
+chr13	76493001	76498000	Region_B
+```
+Overlap selection.bed with one copy sites:
+```
+fastjoinBedByOverlap.py selection.bed  $jackieDB/hg38PAM.1copy.BED > selection.overlap.hg38PAM.1copy.BED
+```
+## Run Cas-OFFinder 
+Requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/portable)
+Also, casoffinder should be in `$PATH`
+
+For example, from selection.overlap.hg38PAM.1copy.BED above:
+
+```
+
+genome=<fill in your genome> #e.g., hg38
+genomesRoot=<fill in your genomes data root path> 
+pathToGenome=$genomesRoot/$genome
+
+BEDFile=selection.overlap.hg38PAM.1copy.BED
+cas_outDir=/path/to/IOForCasOffFinder
+
+runCasOFFinderOnSequences.py $BEDFile > 8,/,2 3 $pathToGenome $cas_outDir > $BEDFile.cas_off.txt
+```
 
 <!--
+
 
 #run CasOffFinder (requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/portable)
 #export PATH=/usr/bin/:${PATH}
 #export PATH=~/Dropbox/unixEnv/scripts:${PATH}
-runCasOFFinderOnSequences.py <file> 4,/,2 3 ~/Dropbox/unixEnv/genomes/hg38/ casOffinder_outputDir > ???
+runCasOFFinderOnSequences.py <file> 8,/,2 3 ~/Dropbox/unixEnv/genomes/hg38/ casOffinder_outputDir > ???
 
 #runCasOFFinderOnSequences.py newSelectionLoop.overlap.hg38PAM.sameChr.tx.sorted.legal.1copy.GC40to60.no5T.noLowercase.2.bed 17 3 ~/Dropbox/unixEnv/genomes/hg38/ newSelectionLoop.overlap.hg38PAM_off > newSelectionLoop.overlap.hg38PAM.sameChr.tx.sorted.legal.1copy.GC40to60.no5T.noLowercase.2.casOffinder.txt
 ```

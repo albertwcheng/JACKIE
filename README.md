@@ -121,7 +121,7 @@ Requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/
 Also, casoffinder should be in `$PATH`
 
 For example, from selection.overlap.hg38PAM.1copy.BED above:
-Let say, up to 3 mismatches. Sequence is encoded in the itemName (on the 8th column, second component of a split with "/"
+Let say, up to 3 mismatches. Sequence is encoded in the itemName (on the 8th column, second component of a split with "/"), so seqColExtract=8,/,2
 ```
 
 genome=<fill in your genome> #e.g., hg38

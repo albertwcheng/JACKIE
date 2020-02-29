@@ -73,6 +73,37 @@ Third step, merge all bed files into one:
 echo "cat $jackieDB/*.bed > $jackieDB/${genome}PAM.BED" | qsub -l walltime=24:00:00
 ```
 
+Optional step - collapse CRISPR sites from same chromosome into an extended bed format, with each line containing sites of the same sequence:
+```
+#collapse sgRNA binding locations with same sequecnes into an extended bed format
+echo "chainExonBedsToTranscriptBed.py $jackieDB/${genome}PAM.BED 0 > $jackieDB/${genome}PAM.sameChr.tx.bed" | qsub -l walltime=24:00:00
+```
+Optional step - sort extended bed file:
+```
+#sort extended bed file
+echo "sort -k1,1 -k2,2n $jackieDB/${genome}PAM.sameChr.tx.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.bed" | qsub -l walltime=24:00:00
+
+#some CRISPR sites are overlapping, and will crash browser visualization. Remove entries with overlapping sgRNA sites
+echo "removeIllegalBlockEntries.py $jackieDB/${genome}PAM.sameChr.tx.sorted.bed $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed $jackieDB/${genome}PAM.sameChr.tx.sorted.illegal.bed" | qsub -l walltime=24:00:00
+```
+
+## Filtering examples
+
+Select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
+```
+#select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
+minBS=5
+maxBS=8
+minDist=5000
+maxDist=10000
+awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
+```
+select unique sgRNA sites
+```
+#select unique sgRNA sites
+awk -v FS="\t" -v OFS="\t" '($5==1)' $jackieDB/${genome}PAM.BED > $jackieDB/${genome}PAM.1copy.BED
+```
+
 <!--
 
 
@@ -85,27 +116,19 @@ echo "cat $jackieDB/*.bed > $jackieDB/${genome}PAM.BED" | qsub -l walltime=24:00
 
 
 
-#collapse sgRNA binding locations with same sequecnes into an extended bed format
-echo "chainExonBedsToTranscriptBed.py $jackieDB/${genome}PAM.BED 0 > $jackieDB/${genome}PAM.sameChr.tx.bed" | qsub -l walltime=24:00:00
 
-#sort extended bed file
-echo "sort -k1,1 -k2,2n $jackieDB/${genome}PAM.sameChr.tx.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.bed" | qsub -l walltime=24:00:00
 
-#remove entries with overlapping sgRNA sites.
-echo "removeIllegalBlockEntries.py $jackieDB/${genome}PAM.sameChr.tx.sorted.bed $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed $jackieDB/${genome}PAM.sameChr.tx.sorted.illegal.bed" | qsub -l walltime=24:00:00
+
+
+
+
 
 
 #optional:
-#select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
-minBS=5
-maxBS=8
-minDist=5000
-maxDist=10000
-awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
 
 
-#select unique sgRNA sites
-awk -v FS="\t" -v OFS="\t" '($5==1)' $jackieDB/${genome}PAM.BED > $jackieDB/${genome}PAM.1copy.BED
+
+
 
 #select sgRNA sites within region of interest
 

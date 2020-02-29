@@ -1,5 +1,8 @@
 # JACKIE
 
+## Precomputed CRISPR sites (JACKIEdb)
+Precomputed CRISPR sites (JACKIEdb) available for hg38 and mm10, available at [http://crispr.software/JACKIE] (http://crispr.software/JACKIE)
+
 ## Installation
 
 With root privilege:

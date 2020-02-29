@@ -131,7 +131,7 @@ pathToGenome=$genomesRoot/$genome
 BEDFile=selection.overlap.hg38PAM.1copy.BED
 cas_outDir=/path/to/IOForCasOffFinder
 
-runCasOFFinderOnSequences.py $BEDFile > 8,/,2 3 $pathToGenome $cas_outDir > $BEDFile.cas_off.txt
+runCasOFFinderOnSequences.py $BEDFile 8,/,2 3 $pathToGenome $cas_outDir > $BEDFile.cas_off.txt
 ```
 
 <!--

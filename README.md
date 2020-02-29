@@ -96,7 +96,7 @@ echo "removeIllegalBlockEntries.py $jackieDB/${genome}PAM.sameChr.tx.sorted.bed 
 ## Filtering examples
 
 Select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
-Precomputed [hg38 same-chromosome sites](http://albertcheng.info/jackie_downloads/hg38PAM.sameChr.tx.sorted.legal.bed.gz) and [mm10 same-chromosome sites](http://albertcheng.info/jackie_downloads/mm10.sameChr.tx.sorted.legal.bed.gz)
+Precomputed [hg38 same-chromosome sites](http://albertcheng.info/jackie_downloads/hg38PAM.sameChr.tx.sorted.legal.bed.gz) and [mm10 same-chromosome sites](http://albertcheng.info/jackie_downloads/mm10PAM.sameChr.tx.sorted.legal.bed.gz)
 ```
 #select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
 minBS=5

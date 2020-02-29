@@ -121,7 +121,7 @@ Requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/
 Also, casoffinder should be in `$PATH`
 
 For example, from selection.overlap.hg38PAM.1copy.BED above:
-
+Let say, up to 3 mismatches. Sequence is encoded in the itemName (on the 8th column, second component of a split with "/"
 ```
 
 genome=<fill in your genome> #e.g., hg38
@@ -130,8 +130,9 @@ pathToGenome=$genomesRoot/$genome
 
 BEDFile=selection.overlap.hg38PAM.1copy.BED
 cas_outDir=/path/to/IOForCasOffFinder
-
-runCasOFFinderOnSequences.py $BEDFile 8,/,2 3 $pathToGenome $cas_outDir > $BEDFile.cas_off.txt
+maxNmismatches=3
+seqColExtract=8,/,2
+runCasOFFinderOnSequences.py $BEDFile $seqColExtract $maxNmismatches $pathToGenome $cas_outDir > $BEDFile.cas_off.txt
 ```
 
 <!--

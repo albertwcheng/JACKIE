@@ -17,15 +17,13 @@ Install to specific path:
 make
 make install
 ```
-<!--
-## Example
+
+Add JACKIE to path. In your ~/.bashrc file, add
 ```
-#remember to add JACKIE to your path in ~/.bashrc file
-#
-#e.g.,
-#export PATH=/hpcdata/wcheng/test/bin:${PATH}
-#
-#
+export PATH=/path/to/install/:${PATH}
+```
+
+<!--
 
 genome=<fill in your genome> #e.g., hg38
 genomesRoot=<fill in your root path> #e.g.,/hpcdata/wcheng/genomes

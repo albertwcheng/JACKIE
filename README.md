@@ -98,40 +98,14 @@ minDist=5000
 maxDist=10000
 awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
 ```
-select unique sgRNA sites
+Select unique sgRNA sites
 ```
 #select unique sgRNA sites
 awk -v FS="\t" -v OFS="\t" '($5==1)' $jackieDB/${genome}PAM.BED > $jackieDB/${genome}PAM.1copy.BED
 ```
 
+
 <!--
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#optional:
-
-
-
-
-
-#select sgRNA sites within region of interest
-
 
 #run CasOffFinder (requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/portable)
 #export PATH=/usr/bin/:${PATH}

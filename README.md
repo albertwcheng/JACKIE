@@ -60,6 +60,7 @@ echo "date; JACKIE -b2 $genomeFasta $jackieDB .bin 6 $jackieDB/$N.ref.txt $N n; 
 done
 
 ```
+Please make sure all four jobs for step one have completed successfully, e.g., by using `qstat` and checking output files.
 Second step, load binary files (*.bin), sort by sequence, output bed files:
 ```
 #output bed file from binary files.
@@ -67,6 +68,7 @@ for prefix in AA AC AT AG CA CC CT CG TA TC TT TG GA GC GT GG; do
 echo "date; outbedForPrefixJob.sh $jackieDB $prefix 1 0; date" | qsub -l walltime=24:00:00 -e `pwd`/$prefix.stderr.txt -o `pwd`/$prefix.stdout.txt	
 done
 ```
+Please make sure all jobs in second step have completed successfully.
 Third step, merge all bed files into one:
 ```
 #concatenate all bed files into one

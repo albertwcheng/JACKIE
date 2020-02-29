@@ -60,7 +60,7 @@ echo "date; JACKIE -b2 $genomeFasta $jackieDB .bin 6 $jackieDB/$N.ref.txt $N n; 
 done
 
 ```
-Second step, load binary files (\*.bin), sort by sequence, output bed files:
+Second step, load binary files (*.bin), sort by sequence, output bed files:
 ```
 #output bed file from binary files.
 for prefix in AA AC AT AG CA CC CT CG TA TC TT TG GA GC GT GG; do
@@ -70,7 +70,7 @@ done
 Third step, merge all bed files into one:
 ```
 #concatenate all bed files into one
-echo "cat $jackieDB/\*.bed > $jackieDB/${genome}PAM.BED" | qsub -l walltime=24:00:00
+echo "cat $jackieDB/*.bed > $jackieDB/${genome}PAM.BED" | qsub -l walltime=24:00:00
 ```
 
 <!--

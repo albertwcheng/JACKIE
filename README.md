@@ -26,7 +26,7 @@ export PATH=/path/to/install/:${PATH}
 Download genome fasta files and produce a merged files for "non-random" chromosomes
 ```
 genome=<fill in your genome> #e.g., hg38
-genomesRoot=<fill in your root path> 
+genomesRoot=<fill in your genomes data root path> 
 pathToGenome=$genomesRoot/$genome
 genomeFasta=$pathToGenome/$genome.nr.fa
 
@@ -42,12 +42,23 @@ cat nr/*.fa > $genome.nr.fa
 
 ```
 
-Run first step of JACKIE
+Run first step of JACKIE, assuming your cluster uses `qsub`:
+
 ```
+genome=<fill in your genome> #e.g., hg38
+genomesRoot=<fill in your genomes data root path> 
+pathToGenome=$genomesRoot/$genome
+genomeFasta=$pathToGenome/$genome.nr.fa
+
 jackieDB=$pathToGenome/jackieDB/
 mkdir $jackieDB
 
-....
+#generate binary represetation of sgRNA binding locations
+
+for N in A C G T; do
+echo "date; JACKIE -b2 $genomeFasta $pamFold .bin 6 $pamFold/$N.ref.txt $N n; date" | qsub -l walltime=48:00:00
+done
+
 ```
 
 <!--
@@ -57,10 +68,7 @@ mkdir $jackieDB
 
 
 
-#generate binary represetation of sgRNA binding locations
-for N in A C G T; do
-echo "date; JACKIE -b2 $genomeFasta $pamFold .bin 6 $pamFold/$N.ref.txt $N n; date" | qsub -l walltime=48:00:00
-done
+
 
 #output bed file from binary files.
 for prefix in AA AC AT AG CA CC CT CG TA TC TT TG GA GC GT GG; do

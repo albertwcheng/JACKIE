@@ -1,5 +1,7 @@
 # JACKIE
 
+JACKIE (Jackie and Albert's CRISPR K-mer Instances Enumerator) [yes, a recursive acronym!], is a software pipeline written mainly in C++ with accessory scripts written in bash and python languges, that allows enumeration of all potential SpCas9 binding sites in a genome and output their sequences, copy numbers and locations. We have demonstrated its application to design sgRNA with clustered repetitive binding sites for imaging genomic region. Please see the [preprint](https://doi.org/10.1101/2020.02.27.968933) for more details.
+
 ## Precomputed CRISPR sites (JACKIEdb)
 Precomputed CRISPR sites (JACKIEdb) available for hg38 and mm10, available at http://crispr.software/JACKIE
 Users interested in strating from precomputed sites to further filter or identify sites within regions, etc, can jump to the [later sections](README.md#filtering-examples)

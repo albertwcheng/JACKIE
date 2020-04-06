@@ -1,7 +1,10 @@
 # JACKIE
 
+JACKIE (Jackie and Albert's CRISPR K-mer Instances Enumerator) [yes, a recursive acronym!], is a software pipeline written mainly in C++ with accessory scripts written in bash and python languges, that allows enumeration of all potential SpCas9 binding sites in a genome and output their sequences, copy numbers and locations. We have demonstrated its application to design sgRNA with clustered repetitive binding sites for imaging genomic region. Please see the [preprint](https://doi.org/10.1101/2020.02.27.968933) for more details.
+
 ## Precomputed CRISPR sites (JACKIEdb)
 Precomputed CRISPR sites (JACKIEdb) available for hg38 and mm10, available at http://crispr.software/JACKIE
+Users interested in strating from precomputed sites to further filter or identify sites within regions, etc, can jump to the [later sections](README.md#filtering-examples)
 
 ## Installation
 
@@ -95,19 +98,22 @@ echo "removeIllegalBlockEntries.py $jackieDB/${genome}PAM.sameChr.tx.sorted.bed 
 ## Filtering examples
 
 Select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
+Precomputed [hg38 same-chromosome sites](http://albertcheng.info/jackie_downloads/hg38PAM.sameChr.tx.sorted.legal.bed.gz) and [mm10 same-chromosome sites](http://albertcheng.info/jackie_downloads/mm10PAM.sameChr.tx.sorted.legal.bed.gz)
 ```
 #select clustered sgRNA with (minBS)5 to (maxBS)8 binding sites and within (minDist)5kb to (maxDist)10kb distance
 minBS=5
 maxBS=8
 minDist=5000
 maxDist=10000
-awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.bed > $jackieDB/${genome}PAM.sameChr.tx.sorted.legal.Dist${minDist}_${maxDist}.BS${minBS}_${maxBS}.bed
+genome=hg38 #human genome example
+awk -v FS="\t" -v OFS="\t" -v minBS=$minBS -v maxBS=$maxBS -v minDist=$minDist -v maxDist=$maxDist '($3-$2>=minDist && $3-$2<=maxDist && $5>=minBS && $5<=maxBS)' $genome.sameChr.tx.sorted.legal.bed > $genome.sameChr.tx.sorted.legal.bed
 ```
 Select unique sgRNA sites
 ```
 #select unique sgRNA sites
 awk -v FS="\t" -v OFS="\t" '($5==1)' $jackieDB/${genome}PAM.BED > $jackieDB/${genome}PAM.1copy.BED
 ```
+Precomputed [hg38 1-copy sites](http://albertcheng.info/jackie_downloads/hg38PAM.1copy.BED.gz) and [mm10 1-copy sites](http://albertcheng.info/jackie_downloads/mm10PAM.1copy.BED.gz)
 
 ## Selecting (clustered or single) CRISPR sites overlapping regions of interest
 Put regions of interest into a bed file, say,  `selection.bed`:
@@ -121,7 +127,7 @@ fastjoinBedByOverlap.py selection.bed  $jackieDB/hg38PAM.1copy.BED > selection.o
 ```
 ## Run Cas-OFFinder 
 Requires offline version of Cas-OFFinder at http://www.rgenome.net/cas-offinder/portable)
-Also, casoffinder should be in `$PATH`
+Also, cas-offinder should be in `$PATH`
 
 For example, from selection.overlap.hg38PAM.1copy.BED above:
 Let say, up to 3 mismatches. Sequence is encoded in the itemName (on the 8th column, second component of a split with "/"), so seqColExtract=8,/,2

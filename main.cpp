@@ -54,7 +54,10 @@ void printFGHelp(const char* programname)
 
 	cerr<<"-b2 fasta output_prefix output_suffix prefixLength outchrRef prefix2 ignoreLowercaseSeq"<<endl;
 	cerr<<"\tGenerete binary files of simulated reads binned by prefix (only those with prefix2)"<<endl;
-	
+
+	cerr<<"-b3 fasta output_prefix output_suffix prefixLength outchrRef prefix2 ignoreLowercaseSeq kmerLengthIncludingPAM(23?)"<<endl;
+	cerr<<"\tGenerete binary files of simulated reads binned by prefix (only those with prefix2)"<<endl;
+
 
 	//cerr<<"-f binaryUnfold binaryFold threshold"<<endl;
 	//cerr<<"\tFold a file by removing reads redundant for threshold time(s)"<<endl;
@@ -98,6 +101,21 @@ void foldGenomics_generateBinary2(int argc,const char** argv)
 	encoder.transferFromFastaFile(argv[2],argv[7],argv[8][0]=='N' || argv[8][0]=='n' );
 	
 }
+
+void foldGenomics_generateBinary3(int argc,const char** argv)
+{
+	if(argc<10)
+	{
+		printFGHelp(argv[0]);
+		return;
+	}
+	
+	GenomeNmersEncoder encoder(argv[3],argv[4],StringUtil::atoi(argv[5]),argv[6],StringUtil::atoi(argv[9]));
+	encoder.transferFromFastaFile(argv[2],argv[7],argv[8][0]=='N' || argv[8][0]=='n' );
+	
+}
+
+
 void foldGenomics_generateBinary(int argc,const char** argv)
 {
 	if(argc<8)
@@ -211,15 +229,18 @@ void outKPtoBedFile(ofstream& ffileOut,SmartChrMap & indexedChrMap, int freq,vec
         
         ffileOut<<indexedChrMap.getChrMapInfoFromPChrID(i->chrID).k1; //chrom
         ffileOut<<"\t";
+
+
+		if(firstItem){
+			seq=Key3b2Nuc(i->b);
+			firstItem=false;
+		}
+
         int start0=i->getPos()-1;
-        int end1=start0+20;
+        int end1=start0+seq.length();
         char strand=(i->isForward()?'+':'-');
         ffileOut<<start0<<"\t"<<end1<<"\t";
 
-	if(firstItem){
-		seq=Key3b2Nuc(i->b);
-		firstItem=false;
-	}
         ffileOut<<i->b<<"."<<freq<<"/"<<seq<<"\t";
         ffileOut<<freq<<"\t";
         ffileOut<<strand<<endl;
@@ -274,6 +295,8 @@ void foldGenomics_foldToBed_stdsort(int argc,const char** argv)
     
 	int thrLo=StringUtil::atoi(argv[5]);
 	int thrHi=StringUtil::atoi(argv[6]);
+
+
     
 	
 	int i=0;
@@ -505,12 +528,18 @@ int main(int argc, const char **argv)
 	{
 		foldGenomics_generateBinary2(argc,argv);
 	}
+	else if(!strcmp(argv[1],"-b3"))
+	{
+		foldGenomics_generateBinary3(argc,argv);
+	}
     else if(!strcmp(argv[1],"-f3"))
 	{
 		foldGenomics_foldToBed_stdsort(argc,argv);
 	}else if(!strcmp(argv[1],"-pk"))
 	{
 		foldGenomics_print(argc,argv,KEYEDPOSITION);
+	}else{
+		cerr<<"Command not found:"<<argv[1]<<endl;
 	}
     /*
 	else if(!strcmp(argv[1],"-f"))

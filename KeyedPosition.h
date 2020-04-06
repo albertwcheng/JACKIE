@@ -752,7 +752,7 @@ public:
     {
         //NGG = 22G 23G
         
-        for(int j=i;j<i+23;j++){
+        for(int j=i;j<i+nmersize;j++){
             //cerr<<"check "<<str[j]<<" " <<(str[j]>'T' || str[j]=='N')<<endl;
             if(str[j]>'T' || str[j]=='N'){
                 //lowercase or N
@@ -770,7 +770,7 @@ public:
         }
         
         
-        return (str[i+21]=='G' || str[i+21]=='g') && (str[i+22]=='G' || str[i+22]=='g');
+        return (str[i+nmersize-2]=='G' || str[i+nmersize-2]=='g') && (str[i+nmersize-1]=='G' || str[i+nmersize-1]=='g');
     }
     
 	inline void transferFromFastaFile(string fastaFileName,string prefixConstraint="",bool autoUpperCase=true)

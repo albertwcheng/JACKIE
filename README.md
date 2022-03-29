@@ -1,5 +1,5 @@
 # JACKIE (old version no longer updated). 
-For new version JACKIE2, go to https://github.com/albertwcheng/JACKIE2
+#For new version JACKIE2, go to https://github.com/albertwcheng/JACKIE2
 
 JACKIE (Jackie and Albert's CRISPR K-mer Instances Enumerator) [yes, a recursive acronym!], is a software pipeline written mainly in C++ with accessory scripts written in bash and python languges, that allows enumeration of all potential SpCas9 binding sites in a genome and output their sequences, copy numbers and locations. We have demonstrated its application to design sgRNA with clustered repetitive binding sites for imaging genomic region. Please see the [preprint](https://doi.org/10.1101/2020.02.27.968933) for more details.
 
